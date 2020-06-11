@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-
 public class MealsServlet extends HttpServlet {
     private static final Logger log = getLogger(MealsServlet.class);
 
@@ -38,7 +37,7 @@ public class MealsServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
-        storage.create(meal);
+        storage.save(meal);
         response.sendRedirect("meals");
     }
 
@@ -62,7 +61,7 @@ public class MealsServlet extends HttpServlet {
                     meal = storage.getMeal(Integer.parseInt(request.getParameter("id")));
                     log.debug("{}", "update ".concat(meal.getId().toString()));
                 }
-                log.debug("{}", Objects.requireNonNull(meal).isNotExist() ? "create new" : "update ".concat(meal.getId().toString()));
+                log.debug("{}", meal.isNotExist() ? "create new" : "update ".concat(meal.getId().toString()));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/addMeals.jsp").forward(request, response);
                 break;

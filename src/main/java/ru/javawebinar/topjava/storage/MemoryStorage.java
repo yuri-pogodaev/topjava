@@ -10,22 +10,21 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MemoryStorage implements Storage {
-    Map<Integer, Meal> mealsHashMap = new ConcurrentHashMap<>();
-    private final AtomicInteger currentID = new AtomicInteger(0);
+    private final Map<Integer, Meal> mealsHashMap = new ConcurrentHashMap<>();
+    private AtomicInteger currentID = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(this::create);
+        MealsUtil.meals.forEach(this::save);
     }
 
     @Override
-    public Meal create(Meal meal) {
+    public void save(Meal meal) {
         if (Objects.nonNull(meal)) {
             if (meal.isNotExist() || meal.getId() > currentID.get() || meal.getId() <= 0) {
                 meal.setId(currentID.incrementAndGet());
             }
-            return mealsHashMap.put(meal.getId(), meal);
+            mealsHashMap.put(meal.getId(), meal);
         }
-        return null;
     }
 
     @Override
