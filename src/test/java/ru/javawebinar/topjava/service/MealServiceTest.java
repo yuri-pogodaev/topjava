@@ -68,7 +68,8 @@ public class MealServiceTest {
         final List<Meal> FILTERED_ADMIN_MEALS = Arrays.asList(
                 ADMIN_MEAL_6,
                 ADMIN_MEAL_5,
-                ADMIN_MEAL_4
+                ADMIN_MEAL_4,
+                ADMIN_MEAL_7
         );
         Assert.assertEquals(FILTERED_ADMIN_MEALS, filteredMealsAdmin);
     }
@@ -88,10 +89,10 @@ public class MealServiceTest {
         Assert.assertEquals(ALL_USER_MEALS, meals);
         meals = service.getAll(ADMIN_ID);
         final List<Meal> ALL_ADMIN_MEALS = Arrays.asList(
-                ADMIN_MEAL_7,
                 ADMIN_MEAL_6,
                 ADMIN_MEAL_5,
                 ADMIN_MEAL_4,
+                ADMIN_MEAL_7,
                 ADMIN_MEAL_3,
                 ADMIN_MEAL_2,
                 ADMIN_MEAL_1
