@@ -2,9 +2,13 @@ package ru.javawebinar.topjava;
 
 import ru.javawebinar.topjava.model.Meal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
@@ -33,4 +37,52 @@ public class MealTestData {
     public static final int ADMIN_UPDATED_MEAL_ID = ADMIN_MEAL_1_ID;
     public static final Meal ADMIN_UPDATED_MEAL = new Meal(ADMIN_MEAL_1_ID, LocalDateTime.of(2020, Month.JUNE, 21, 10, 44), "Updated", 500);
     public static final Meal ADMIN_NEW_MEAL = new Meal(null, LocalDateTime.of(2020, Month.JUNE, 24, 9, 0), "Завтрак ADMIN", 700);
+
+    public static final LocalDate START_DATE_USER = LocalDate.of(2020, 6, 21);
+    public static final LocalDate END_DATE_USER = LocalDate.of(2020, 6, 21);
+    public static final LocalDate START_DATE_ADMIN = LocalDate.of(2020, 6, 22);
+    public static final LocalDate END_DATE_ADMIN = LocalDate.of(2020, 6, 22);
+    public final static List<Meal> ALL_USER_MEALS = Arrays.asList(
+            USER_MEAL_7,
+            USER_MEAL_3,
+            USER_MEAL_2,
+            USER_MEAL_1,
+            USER_MEAL_6,
+            USER_MEAL_5,
+            USER_MEAL_4
+    );
+
+    public final static List<Meal> ALL_ADMIN_MEALS = Arrays.asList(
+            ADMIN_MEAL_6,
+            ADMIN_MEAL_5,
+            ADMIN_MEAL_4,
+            ADMIN_MEAL_7,
+            ADMIN_MEAL_3,
+            ADMIN_MEAL_2,
+            ADMIN_MEAL_1
+    );
+
+    public final static List<Meal> FILTERED_ADMIN_MEALS = Arrays.asList(
+            ADMIN_MEAL_6,
+            ADMIN_MEAL_5,
+            ADMIN_MEAL_4,
+            ADMIN_MEAL_7
+    );
+    public final static List<Meal> FILTERED_USER_MEALS = Arrays.asList(
+            USER_MEAL_3,
+            USER_MEAL_2,
+            USER_MEAL_1
+    );
+
+    public static void assertMatch(Meal actual, Meal expected) {
+        assertThat(actual).isEqualToComparingFieldByField(expected);
+    }
+
+    public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
+        assertMatch(actual, Arrays.asList(expected));
+    }
+
+    public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields("user_id").isEqualTo(expected);
+    }
 }

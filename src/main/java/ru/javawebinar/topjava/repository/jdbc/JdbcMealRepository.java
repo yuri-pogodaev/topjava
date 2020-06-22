@@ -26,8 +26,8 @@ public class JdbcMealRepository implements MealRepository {
 
     private final SimpleJdbcInsert insertUser;
 
-    private static final String UPDATE_QUERY = "UPDATE meals SET datetime=:datetime, description=:description, calories=:calories, " +
-            "user_id=:user_id WHERE id=:id AND user_id=:user_id";
+    private static final String UPDATE_QUERY = "UPDATE meals SET datetime=:datetime, description=:description, calories=:calories " +
+            " WHERE id=:id AND user_id=:user_id";
     private static final String DELETE_QUERY = "DELETE FROM meals WHERE id =? AND user_id=?";
     private static final String GET_QUERY = "SELECT * FROM meals WHERE id =? AND user_id =?";
     private static final String GET_ALL_QUERY = "SELECT * FROM meals WHERE user_id=? ORDER BY datetime DESC";
