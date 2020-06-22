@@ -11,6 +11,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -18,12 +19,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.*;
 
 @ContextConfiguration({
-        "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-app-jdbs.xml",
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringRunner.class)
@@ -116,5 +117,20 @@ public class MealServiceTest {
         ADMIN_NEW_MEAL.setId(created.getId());
         assertThat(created).isEqualToComparingFieldByField(ADMIN_NEW_MEAL);
         assertThat(service.get(created.getId(), ADMIN_ID)).isEqualToComparingFieldByField(ADMIN_NEW_MEAL);
+    }
+
+    @Test
+    public void deleteAnotherUser() {
+        assertThrows(NotFoundException.class, () -> service.delete(ADMIN_MEAL_1_ID, USER_ID));
+    }
+
+    @Test
+    public void deleteNotFound() {
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND, USER_ID));
+    }
+
+    @Test
+    public void updateAnotherUser() {
+        assertThrows(NotFoundException.class, () -> service.update(USER_UPDATED_MEAL, ADMIN_ID));
     }
 }
