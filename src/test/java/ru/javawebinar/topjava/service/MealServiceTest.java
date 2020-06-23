@@ -61,28 +61,37 @@ public class MealServiceTest {
     @Test
     public void getAll() {
         List<Meal> meals = service.getAll(USER_ID);
-        assertMatch(ALL_USER_MEALS, meals);
+        assertMatch(meals, ALL_USER_MEALS);
         meals = service.getAll(ADMIN_ID);
-        assertMatch(ALL_ADMIN_MEALS, meals);
+        assertMatch(meals, ALL_ADMIN_MEALS);
     }
 
     @Test
     public void update() {
-        service.update(USER_UPDATED_MEAL, USER_ID);
-        assertMatch(service.get(USER_UPDATED_MEAL_ID, USER_ID), USER_UPDATED_MEAL);
-        service.update(ADMIN_UPDATED_MEAL, ADMIN_ID);
-        assertMatch(service.get(ADMIN_UPDATED_MEAL_ID, ADMIN_ID), ADMIN_UPDATED_MEAL);
+        Meal update = getUpdatedMealUser();
+        service.update(update, USER_ID);
+        assertMatch(service.get(USER_UPDATED_MEAL_ID, USER_ID), update);
+
+        update = getUpdatedMealAdmin();
+        service.update(update, ADMIN_ID);
+        assertMatch(service.get(ADMIN_UPDATED_MEAL_ID, ADMIN_ID), update);
     }
 
     @Test
     public void create() {
-        Meal created = service.create(USER_NEW_MEAL, USER_ID);
-        assertMatch(created, USER_NEW_MEAL);
-        assertMatch(service.get(created.getId(), USER_ID), USER_NEW_MEAL);
+        Meal newMeal = getCreatedForUser();
+        Meal created = service.create(newMeal, USER_ID);
+        Integer newId = created.getId();
+        newMeal.setId(created.getId());
+        assertMatch(created, newMeal);
+        assertMatch(service.get(newId, USER_ID), newMeal);
 
-        created = service.create(ADMIN_NEW_MEAL, ADMIN_ID);
-        assertMatch(created, ADMIN_NEW_MEAL);
-        assertMatch(service.get(created.getId(), ADMIN_ID), ADMIN_NEW_MEAL);
+        newMeal = getCreatedForAdmin();
+        created = service.create(newMeal, ADMIN_ID);
+        Integer newIdAdmin = created.getId();
+        newMeal.setId(created.getId());
+        assertMatch(created, newMeal);
+        assertMatch(service.get(newIdAdmin, ADMIN_ID), newMeal);
     }
 
     @Test
@@ -97,6 +106,6 @@ public class MealServiceTest {
 
     @Test
     public void updateAnotherUser() {
-        assertThrows(NotFoundException.class, () -> service.update(USER_UPDATED_MEAL, ADMIN_ID));
+        assertThrows(NotFoundException.class, () -> service.update(getUpdatedMealUser(), ADMIN_ID));
     }
 }
