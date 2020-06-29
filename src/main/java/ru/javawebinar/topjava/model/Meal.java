@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NamedQueries({
-//        @NamedQuery(name = Meal.GET, query = "SELECT NEW Meal(m.id, m.dateTime, m.description, m.calories) FROM Meal m WHERE m.id=:id AND m.user.id=: userId"),
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=: userId"),
         @NamedQuery(name = Meal.GET_ALL, query = "SELECT NEW Meal(m.id, m.dateTime, m.description, m.calories)  FROM Meal m WHERE  m.user.id =: userId ORDER BY m.id DESC"),
         @NamedQuery(name = Meal.BETWEEN_HALF_OPEN, query = "SELECT NEW Meal(m.id, m.dateTime, m.description, m.calories) FROM Meal m WHERE m.user.id =: userId AND m.dateTime >=  :start AND m.dateTime < :end ORDER BY m.dateTime DESC"),

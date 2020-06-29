@@ -43,7 +43,6 @@ public class MealServiceTest {
 
     @After
     public void end() {
-//        System.out.println("Test " + name.getMethodName() + " took " + (System.currentTimeMillis() - start) + " ms");
         end = System.currentTimeMillis() - start;
         out = "Test " + name.getMethodName() + " took " + end + " ms";
         System.out.println(out);
