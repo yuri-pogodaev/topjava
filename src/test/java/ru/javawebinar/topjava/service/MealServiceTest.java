@@ -27,7 +27,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class MealServiceTest{
+public class MealServiceTest {
 
     @Rule
     public TestName name = new TestName();
@@ -44,7 +44,7 @@ public class MealServiceTest{
     @After
     public void end() {
 //        System.out.println("Test " + name.getMethodName() + " took " + (System.currentTimeMillis() - start) + " ms");
-        end = System.currentTimeMillis() -start;
+        end = System.currentTimeMillis() - start;
         out = "Test " + name.getMethodName() + " took " + end + " ms";
         System.out.println(out);
         list.add(out);
@@ -126,7 +126,7 @@ public class MealServiceTest{
     }
 
     @AfterClass
-    public static void afterClass(){
+    public static void afterClass() {
         System.out.println(list.toString());
     }
 
