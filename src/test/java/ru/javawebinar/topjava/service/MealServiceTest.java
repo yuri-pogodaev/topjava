@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -45,12 +46,14 @@ public class MealServiceTest {
         @Override
         protected void starting(Description description) {
             startLog = System.nanoTime();
+
             super.starting(description);
         }
 
         @Override
         protected void finished(Description description) {
             endLog = -(startLog - System.nanoTime());
+            endLog = TimeUnit.MILLISECONDS.convert(endLog, TimeUnit.NANOSECONDS);
             super.finished(description);
             out = "Test " + description.getMethodName() + " took " + endLog + " ms";
             log.info(out);
