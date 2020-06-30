@@ -1,8 +1,14 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.*;
-import org.junit.rules.TestName;
+import org.junit.AfterClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -13,8 +19,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -28,25 +34,36 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static Map<String, Long> map = new HashMap<>();
+    private static long startLog;
+    private static long endLog;
+    private static String out;
 
     @Rule
-    public TestName name = new TestName();
-    private long start;
-    private long end;
-    private String out;
-    private static Collection<String> list = new LinkedList<>();
+    public TestRule nameAndTime = new TestWatcher() {
+        @Override
+        protected void starting(Description description) {
+            startLog = System.nanoTime();
+            super.starting(description);
+        }
 
-    @Before
-    public void start() {
-        start = System.currentTimeMillis();
-    }
+        @Override
+        protected void finished(Description description) {
+            endLog = -(startLog - System.nanoTime());
+            super.finished(description);
+            out = "Test " + description.getMethodName() + " took " + endLog + " ms";
+            log.info(out);
+            map.put(description.getMethodName(), endLog);
+        }
+    };
 
-    @After
-    public void end() {
-        end = System.currentTimeMillis() - start;
-        out = "Test " + name.getMethodName() + " took " + end + " ms";
-        System.out.println(out);
-        list.add(out);
+    @AfterClass
+    public static void finish() {
+        map.forEach((key, value) -> {
+            System.out.format("%25s%12d ms", key, value);
+            System.out.println();
+        });
     }
 
     @Autowired
@@ -123,10 +140,4 @@ public class MealServiceTest {
     public void getBetweenWithNullDates() throws Exception {
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), MEALS);
     }
-
-    @AfterClass
-    public static void afterClass() {
-        System.out.println(list.toString());
-    }
-
 }

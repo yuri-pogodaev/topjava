@@ -22,9 +22,6 @@ public class JpaMealRepository implements MealRepository {
     @Transactional
     public Meal save(Meal meal, int userId) {
         User ref = em.getReference(User.class, userId);
-        if (ref == null) {
-            return null;
-        }
         if (meal.isNew()) {
             meal.setUser(ref);
             em.persist(meal);
