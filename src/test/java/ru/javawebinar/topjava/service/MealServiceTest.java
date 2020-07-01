@@ -47,14 +47,14 @@ public class MealServiceTest {
         protected void starting(Description description) {
             startLog = System.nanoTime();
 
-            super.starting(description);
+//            super.starting(description);
         }
 
         @Override
         protected void finished(Description description) {
             endLog = -(startLog - System.nanoTime());
             endLog = TimeUnit.MILLISECONDS.convert(endLog, TimeUnit.NANOSECONDS);
-            super.finished(description);
+//            super.finished(description);
             out = "Test " + description.getMethodName() + " took " + endLog + " ms";
             log.info(out);
             map.put(description.getMethodName(), endLog);
@@ -63,10 +63,12 @@ public class MealServiceTest {
 
     @AfterClass
     public static void finish() {
+        String format = ("%25s%12d ms \n");
+        StringBuilder sb = new StringBuilder().append("\n");
         map.forEach((key, value) -> {
-            System.out.format("%25s%12d ms", key, value);
-            System.out.println();
+            sb.append(String.format(format,key,value));
         });
+        log.info(sb.toString());
     }
 
     @Autowired
