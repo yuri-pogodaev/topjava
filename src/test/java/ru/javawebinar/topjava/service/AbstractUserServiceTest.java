@@ -26,18 +26,20 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     private CacheManager cacheManager;
 
-    @Autowired
+    @Autowired(required = false)
     protected JpaUtil jpaUtil;
 
     @Before
     public void setUp() throws Exception {
         cacheManager.getCache("users").clear();
-        jpaUtil.clear2ndLevelHibernateCache();
+        if (isJpaBased()) {
+            jpaUtil.clear2ndLevelHibernateCache();
+        }
     }
 
     @Test
     public void create() throws Exception {
-        User created = service.create(getNew());
+        User created = service.create(new User(getNew()));
         int newId = created.id();
         User newUser = getNew();
         newUser.setId(newId);
@@ -82,7 +84,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Test
     public void update() throws Exception {
         User updated = getUpdated();
-        service.update(updated);
+        service.update(new User(updated));
         USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
     }
 
