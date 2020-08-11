@@ -1,5 +1,19 @@
 var context, form;
 
+$('.datetimepicker').datetimepicker({
+    format: 'Y-m-d H:i'
+});
+
+$('.datepicker').datetimepicker({
+    timepicker: false,
+    format: 'Y-m-d'
+});
+
+$('.timepicker').datetimepicker({
+    datepicker: false,
+    format: 'H:i'
+});
+
 function makeEditable(ctx) {
     context = ctx;
     form = $('#detailsForm');
