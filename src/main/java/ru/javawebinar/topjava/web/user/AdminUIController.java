@@ -37,9 +37,9 @@ public class AdminUIController extends AbstractUserController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {
-        ResponseEntity<String> joiner = ValidationUtil.getStringResponseEntity(result);
-        if (joiner != null) {
-            return joiner;
+        ResponseEntity<String> responseEntity = ValidationUtil.getStringResponseEntity(result);
+        if (responseEntity != null) {
+            return responseEntity;
         }
         if (userTo.isNew()) {
             super.create(userTo);

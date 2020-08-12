@@ -8,7 +8,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.*;
 import java.util.Set;
-import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class ValidationUtil {
     private static final Validator validator;
@@ -79,11 +79,10 @@ public class ValidationUtil {
 
     public static ResponseEntity<String> getStringResponseEntity(BindingResult result) {
         if (result.hasErrors()) {
-            StringJoiner joiner = new StringJoiner("<br>");
-            result.getFieldErrors().forEach(
-                    fe -> joiner.add(String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-            );
-            return ResponseEntity.unprocessableEntity().body(joiner.toString());
+            String errorFieldsMsg = result.getFieldErrors().stream()
+                    .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                    .collect(Collectors.joining("<br>"));
+            return ResponseEntity.unprocessableEntity().body(errorFieldsMsg);
         }
         return null;
     }

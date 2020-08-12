@@ -22,7 +22,18 @@ function makeEditable(ctx) {
     });
 
     // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
-    $.ajaxSetup({cache: false});
+    $.ajaxSetup({
+        cache: false,
+        converters: {
+            "text json_date": function (stringData) {
+                var json = JSON.parse(stringData);
+                $(json).each(function () {
+                    this.dateTime = this.dateTime.replace('T', ' ').substr(0, 16);
+                });
+                return json;
+            }
+        }
+    });
 }
 
 function add() {
@@ -35,7 +46,11 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(context.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
+            if (key === 'dateTime') {
+                form.find("input[name='" + key + "']").val(value.replace('T', ' ').substr(0, 16));
+            } else {
+                form.find("input[name='" + key + "']").val(value);
+            }
         });
         $('#editRow').modal();
     });

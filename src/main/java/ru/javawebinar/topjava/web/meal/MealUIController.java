@@ -40,9 +40,9 @@ public class MealUIController extends AbstractMealController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid Meal meal, BindingResult result) {
-        ResponseEntity<String> joiner = ValidationUtil.getStringResponseEntity(result);
-        if (joiner != null) {
-            return joiner;
+        ResponseEntity<String> responseEntity = ValidationUtil.getStringResponseEntity(result);
+        if (responseEntity != null) {
+            return responseEntity;
         }
         if (meal.isNew()) {
             super.create(meal);

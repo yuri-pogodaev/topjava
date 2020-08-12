@@ -19,19 +19,20 @@
                     <div class="row">
                         <div class="col-3">
                             <label for="startDate"><spring:message code="meal.startDate"/></label>
-                            <input class="form-control datepicker"  name="startDate" id="startDate">
+                            <input class="form-control datepicker" name="startDate" id="startDate">
+                            <!--     <input type="text" name="startDate" id="startDate">-->
                         </div>
                         <div class="col-3">
                             <label for="endDate"><spring:message code="meal.endDate"/></label>
-                            <input class="form-control datepicker"  name="endDate" id="endDate">
+                            <input class="form-control datepicker" name="endDate" id="endDate">
                         </div>
                         <div class="offset-2 col-2">
                             <label for="startTime"><spring:message code="meal.startTime"/></label>
-                            <input class="form-control timepicker"  name="startTime" id="startTime">
+                            <input class="form-control timepicker" name="startTime" id="startTime">
                         </div>
                         <div class="col-2">
                             <label for="endTime"><spring:message code="meal.endTime"/></label>
-                            <input class="form-control timepicker"  name="endTime" id="endTime">
+                            <input class="form-control timepicker" name="endTime" id="endTime">
                         </div>
                     </div>
                 </form>
@@ -83,7 +84,7 @@
                                placeholder="<spring:message code="meal.dateTime"/>">
                     </div>
 
-         <div class="form-group">
+                    <div class="form-group">
                         <label for="description" class="col-form-label"><spring:message
                                 code="meal.description"/></label>
                         <input type="text" class="form-control" id="description" name="description"

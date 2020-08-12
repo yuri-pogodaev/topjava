@@ -1,10 +1,10 @@
-var mealAjaxUrl = "ajax/profile/meals/"
+var mealAjaxUrl = "profile/meals/"
 
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
         dataType: 'json_date',
-        url: mealAjaxUrl + "filter",
+        url: mealAjaxUrl + 'filter',
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
@@ -20,6 +20,7 @@ $(function () {
         datatableApi: $("#datatable").DataTable({
             "ajax": {
                 url: mealAjaxUrl,
+                dataType: 'json_date',
                 "dataSrc": ""
             },
             "paging": false,
